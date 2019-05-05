@@ -1,0 +1,5 @@
+---
+
+# tmp dir for downloads
+vagrant_download_dir: /tmp/vagrant_downloads/
+

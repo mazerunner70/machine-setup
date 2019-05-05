@@ -1,0 +1,19 @@
+---
+
+- name: ensure tmp dir created
+  file: 
+    state: directory 
+    path: "{{ vagrant_download_dir }}"
+
+- name: show version being downloaded
+  debug:
+    msg: "Downloading vagrant version {{ vagrant_download_version }}"
+
+- name: download vagrant
+  get_url: 
+    url: "https://releases.hashicorp.com/vagrant/{{ vagrant_download_version }}/vagrant_{{vagrant_download_version }}_x86_64.deb"
+    dest: "{{ vagrant_download_dir }}/vagrant.deb"
+
+- name: install vagrant
+  apt:
+    deb: "{{ vagrant_download_dir }}/vagrant.deb"
