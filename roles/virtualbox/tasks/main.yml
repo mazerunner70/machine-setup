@@ -24,6 +24,11 @@
   when: ( virtualbox_version_current is not defined ) or
         ( virtualbox_version_current.stdout != virtualbox_version_latest.stdout )
 
+- name: check to see if extpack needs updating
+  import_tasks: extpack.yml
+  vars:
+     virtualbox_version_latest: virtualbox_version_latest
+
 - name: output variable result
   debug: 
     msg: "result: {{ virtualbox_version_current.stdout != virtualbox_version_latest.stdout }}:{{ virtualbox_version_current.stdout }}:{{ virtualbox_version_latest.stdout }}"
