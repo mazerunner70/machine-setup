@@ -1,0 +1,25 @@
+---
+
+- name: show version being downloaded
+  debug:
+    msg: "Downloading Virtualbox Extension pack version {{ vbext_download_version }}"
+
+- name: ensure tmp dir created
+  file: 
+    state: directory 
+    path: "{{ vbext_download_dir }}"
+
+- name: download vb extension pack
+  get_url: 
+    url: "https://download.virtualbox.org/virtualbox/{{ vbext_download_version }}/Oracle_VM_VirtualBox_Extension_Pack-{{ vbext_download_version }}.vbox-extpack"
+    dest: "{{ vbext_download_dir }}/Oracle_VM_VirtualBox_Extension_Pack-{{ vbext_download_version }}.vbox-extpack"
+    
+
+- name: fresh install if no current version
+  shell: echo 'y' | vboxmanage extpack install "{{ vbext_download_dir }}/Oracle_VM_VirtualBox_Extension_Pack-{{ vbext_download_version }}.vbox-extpack"
+  when: vbext_version_installed == ""
+
+- name: replace existing version to update
+  shell: echo 'y' | vboxmanage extpack install --replace "{{ vbext_download_dir }}/Oracle_VM_VirtualBox_Extension_Pack-{{ vbext_download_version }}.vbox-extpack"
+  when: vbext_version_installed != ""
+

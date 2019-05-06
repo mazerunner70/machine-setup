@@ -1,0 +1,21 @@
+---
+
+- name: Get extpack version currently installed 
+  script: extpack.py
+  register: vbext_version_installed
+
+- name: do install steps for virtualbox if versions don't match
+  import_tasks: extpack_install.yml
+  vars:
+    vbext_download_version: "{{ virtualbox_version_latest.stdout }}"
+    vbext_version_installed: "{{ vbext_version_installed.stdout }}"
+  when: ( vbext_version_installed is not defined ) or
+        ( vbext_version_installed.stdout != virtualbox_version_latest.stdout )
+
+- name: output variable result
+  debug: 
+    msg: "result: {{ virtualbox_version_current.stdout != virtualbox_version_latest.stdout }}:{{ virtualbox_version_current.stdout }}:{{ virtualbox_version_latest.stdout }}"
+- name: output debug
+  debug:
+    msg: "{{ virtualbox_version_latest }}"
+

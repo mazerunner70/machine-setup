@@ -1,0 +1,6 @@
+---
+
+# tmp dir for downloads
+virtualbox_download_dir: /tmp/virtualbox_downloads/
+vbext_download_dir: /tmp/vbext_downloads/
+
