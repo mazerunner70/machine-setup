@@ -1,0 +1,25 @@
+---
+
+# Setting up the virtualbox repo for apt 
+
+
+- name: Configure the Oracle API key
+  apt_key: 
+    url: "{{ item }}"
+    state: present
+  become: yes
+  with_items:
+    - "https://www.virtualbox.org/download/oracle_vbox.asc"
+    - "https://www.virtualbox.org/download/oracle_vbox_2016.asc"
+
+- name: Configure virtualbox APT repos
+  apt_repository:
+    repo: "deb http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib"
+    state: present
+  become: yes  
+
+- name: update cache with new repo list
+  apt:
+    update_cache: yes
+  become: yes
+

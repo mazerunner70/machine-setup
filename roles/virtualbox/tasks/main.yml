@@ -1,0 +1,33 @@
+---
+
+- name: Update apt repo
+  import_tasks: repo_init.yml
+
+- name: Get latest available virtualbox version 
+  script: get_virtualbox_latest_version.py
+  register: virtualbox_version_latest
+
+- name: see if virtualbox already installed
+  shell: which virtualbox
+  register: which_virtualbox
+  ignore_errors: yes
+
+- name: if virtualbox installed check version
+  shell: vboxmanage --version | cut -f1 -d "r"
+  when: which_virtualbox
+  register:  virtualbox_version_current
+
+- name: do install steps for virtualbox if versions don't match
+  import_tasks: virtualbox_install.yml
+  vars:
+    virtualbox_download_version: "{{ virtualbox_version_latest.stdout | regex_replace('(\\d+\\.\\d+)\\.\\d+', '\\1') }}"
+  when: ( virtualbox_version_current is not defined ) or
+        ( virtualbox_version_current.stdout != virtualbox_version_latest.stdout )
+
+- name: output variable result
+  debug: 
+    msg: "result: {{ virtualbox_version_current.stdout != virtualbox_version_latest.stdout }}:{{ virtualbox_version_current.stdout }}:{{ virtualbox_version_latest.stdout }}"
+- name: output debug
+  debug:
+    msg: "{{ virtualbox_version_latest }}"
+

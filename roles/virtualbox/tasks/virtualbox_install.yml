@@ -1,0 +1,11 @@
+---
+
+- name: show version being downloaded
+  debug:
+    msg: "Downloading virtualbox version {{ virtualbox_download_version }}"
+
+- name: install virtualbox
+  apt:
+    name: "virtualbox-{{ virtualbox_download_version }}"
+    state: present
+  become: yes

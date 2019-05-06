@@ -1,0 +1,5 @@
+---
+
+# tmp dir for downloads
+virtualbox_download_dir: /tmp/virtualbox_downloads/
+
