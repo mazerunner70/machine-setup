@@ -17,3 +17,7 @@
 - name: install vagrant
   apt:
     deb: "{{ vagrant_download_dir }}/vagrant.deb"
+
+- name: auto update of vbguest additions
+  shell: vagrant plugin install vagrant-vbguest
+
